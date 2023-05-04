@@ -1,19 +1,22 @@
 
+## Tugas SQL week 1
 
-<details><summary>1. Menampilkan employee dan atasan nya</summary>
+<details><summary>1. Menampilkan employee, jabatan dan lokasi kerja</summary>
   
   ```sql
-SELECT 
-    IFNULL(CONCAT(m.firstName, ' ', m.lastName),
-            'Chief') AS 'atasan',
-    CONCAT(e.firstName, ' ', e.lastName) AS 'karyawan'
+
+SELECT
+	e.employeeNumber, 
+	concat_ws(' ', e.firstName, e.lastName) AS fullname,
+	e.jobTitle,
+	o.officeCode,
+	o.city,
+	o.country  
 FROM
-    employees e
-LEFT JOIN employees m ON 
-    m.employeeNumber = e.reportsto;
+	employees AS e
+INNER JOIN offices AS o using(officeCode);
 ```
-  
-  <img src="https://user-images.githubusercontent.com/67408325/236235470-5f18f5a4-d725-4995-8b5a-64189b9afc5a.png" width="80%">
+  <img src="https://user-images.githubusercontent.com/67408325/236352631-89d21179-1ac1-4fbc-be58-210aae2bf695.png" width="80%">
 </details>
 <details><summary>2. Menampilkan customer yang total pembelian nya > 150 juta</summary>
   
@@ -129,7 +132,7 @@ GROUP BY
 ```
   <img src="https://user-images.githubusercontent.com/67408325/236260924-e8f40f68-ddb8-4e28-9490-cb0de76087b4.png" width="80%">
 </details>
-<details><summary>9. Menampilkan customer yang tidak dapat melakukan credit</summary>
+<details><summary>9. Menampilkan customer dengan kondisi creditLimit</summary>
   
   ```sql
 SELECT
@@ -142,21 +145,20 @@ FROM
 WHERE
 	c.creditLimit = 0;
 ```
-  
-  <img src="https://user-images.githubusercontent.com/67408325/236235470-5f18f5a4-d725-4995-8b5a-64189b9afc5a.png" width="80%">
+  <img src="https://user-images.githubusercontent.com/67408325/236350717-64bd55e6-e9d5-4424-b150-0948bd15534c.png" width="80%">
 </details>
-<details><summary>1. Menampilkan employee dan atasan nya</summary>
+<details><summary>10. Menghitung jumlah order yang ada pada sebuah product</summary>
   
   ```sql
-SELECT 
-    IFNULL(CONCAT(m.firstName, ' ', m.lastName),
-            'Chief') AS 'atasan',
-    CONCAT(e.firstName, ' ', e.lastName) AS 'karyawan'
+SELECT
+	p.productCode,
+	p.productName, 
+	count(*) AS jumlah_penjualan 
 FROM
-    employees e
-LEFT JOIN employees m ON 
-    m.employeeNumber = e.reportsto;
+	orders AS o
+INNER JOIN orderdetails AS o2 using(orderNumber)
+INNER JOIN products AS p ON o2.productCode = p.productCode
+GROUP BY p.productCode;
 ```
-  
-  <img src="https://user-images.githubusercontent.com/67408325/236235470-5f18f5a4-d725-4995-8b5a-64189b9afc5a.png" width="80%">
+  <img src="https://user-images.githubusercontent.com/67408325/236351825-c73cfcaf-829c-473b-860e-4dd8585cdf2b.png" width="80%">
 </details>
