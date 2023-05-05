@@ -18,7 +18,7 @@ INNER JOIN offices AS o using(officeCode);
 ```
   <img src="https://user-images.githubusercontent.com/67408325/236352631-89d21179-1ac1-4fbc-be58-210aae2bf695.png" width="80%">
 </details>
-<details><summary>2. Menampilkan customer yang total pembelian nya > 150 juta</summary>
+<details><summary>2. Menampilkan customer yang total pembelian nya > 150 ribu dollar</summary>
   
   ```sql
 SELECT
