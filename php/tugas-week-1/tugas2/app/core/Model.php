@@ -2,8 +2,6 @@
 
 namespace App\Core;
 
-use Database;
-
 class Model
 {
 
