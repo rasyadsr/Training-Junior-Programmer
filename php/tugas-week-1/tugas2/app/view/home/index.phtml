@@ -1,0 +1,99 @@
+<div class="container mx-auto p-6">
+    <div class="flex flex-wrap my-6">
+        <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700  w-full">
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Selamat Datang Coders 🧑‍💻</h5>
+            <p class="font-normal text-gray-700 dark:text-gray-400">Simpan Code snippet mu disini!</p>
+        </div>
+    </div>
+
+    <div id="wrapper-form-snippet">
+        <button type="button" id="toggle-form-snippet" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">+
+        </button>
+        <form class="form-snippet hidden" action="/snippets" method="post">
+            <input type="hidden" name="snippet_id" value="">
+            <div class="mb-6">
+                <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Judul Kode</label>
+                <input type="text" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Mencetak Hello World" required>
+            </div>
+
+            <div class="mb-6">
+                <label for="snippet_type_id" class="block text-sm font-medium text-gray-900 dark:text-white">Pilih Bahasa</label>
+                <select id="snippet_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option selected>Pilih Bahasa</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="FR">France</option>
+                    <option value="DE">Germany</option>
+                </select>
+            </div>
+
+            <div class="mb-6">
+                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode</label>
+                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Tulis kode kamu disini, misal print('Hello World')"></textarea>
+            </div>
+
+            <button type="button" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
+        </form>
+    </div>
+
+    <!-- Code highlight content -->
+    <div id="wrapper-code-hightlight" class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    </div>
+
+    <!-- Code hightlight elemen -->
+    <div class="hidden">
+        <h5 class="title-code"></h5>
+        <pre id="code-highlight-element"><code class="language-javascript"></code></pre>
+    </div>
+
+    <div class="empty-snippet w-full p-5 text-center hidden">
+        <h5>Code kamu belum ada, mari buat dulu! 💻</h5>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadSnippet()
+    })
+
+    async function loadSnippet() {
+        // Fetch dulu
+        const response = await fetch("/snippets");
+        const result = await response.json();
+
+        // Kalau ga ada
+        if (!result.length) {
+            document.querySelector(".empty-snippet").classList.remove("hidden");
+        }
+
+        const wrapperCodeHighlight = document.getElementById("wrapper-code-hightlight");
+        wrapperCodeHighlight.classList.remove("hidden")
+        wrapperCodeHighlight.innerHTML = "" // reset dulu 
+
+        result.forEach(value => {
+
+            const codeHightlightElement = document.getElementById("code-highlight-element").parentElement.cloneNode(true);
+            codeHightlightElement.classList.remove("hidden")
+            codeHightlightElement.removeAttribute("id");
+            codeHightlightElement.querySelector(".title-code").textContent = value.title
+            codeHightlightElement.querySelector("code").textContent = parseDecodedCode(value.code)
+
+            // biar tiap element hasil clone nya ada highlight prism nya
+            Prism.highlightElement(codeHightlightElement.querySelector('code'));
+
+            wrapperCodeHighlight.appendChild(codeHightlightElement);
+        });
+    }
+
+    document.getElementById("toggle-form-snippet").addEventListener("click", () => {
+        document.querySelector(".form-snippet").classList.toggle("hidden");
+    })
+
+    // buat nge-decode hasil dari filter_var PHP
+    function parseDecodedCode(code) {
+        let parser = new DOMParser();
+        var decoded = parser.parseFromString('<textarea>' + code + '</textarea>', 'text/html').querySelector('textarea').value;
+        return decoded;
+    }
+</script>

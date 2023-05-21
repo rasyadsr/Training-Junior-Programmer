@@ -15,4 +15,21 @@ class Response
         http_response_code($httpStatusCode);
         return $this;;
     }
+
+    public function apiResponse(string $message, int $httpStatusCode, string $status,  mixed $data): void
+    {
+        $meta = [
+            'message' => $message,
+            'code'    => $httpStatusCode,
+            'status'  => $status
+        ];
+
+        $response = [
+            'meta' => $meta,
+            'data' => $data
+        ];
+
+        $this->status($httpStatusCode);
+        $this->json($response);
+    }
 }
