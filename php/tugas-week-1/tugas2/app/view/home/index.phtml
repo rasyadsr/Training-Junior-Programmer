@@ -43,10 +43,10 @@
     <!-- Code hightlight elemen -->
     <div class="hidden">
         <h5 class="title-code"></h5>
-        <pre id="code-highlight-element"><code class="language-javascript"></code></pre>
+        <pre id="code-highlight-element""></pre>
     </div>
 
-    <div class="empty-snippet w-full p-5 text-center hidden">
+    <div class=" empty-snippet w-full p-5 text-center hidden">
         <h5>Code kamu belum ada, mari buat dulu! 💻</h5>
     </div>
 
@@ -77,12 +77,15 @@
             codeHightlightElement.classList.remove("hidden")
             codeHightlightElement.removeAttribute("id");
             codeHightlightElement.querySelector(".title-code").textContent = value.title
-            codeHightlightElement.querySelector("code").textContent = parseDecodedCode(value.code)
-
-            // biar tiap element hasil clone nya ada highlight prism nya
-            Prism.highlightElement(codeHightlightElement.querySelector('code'));
-
+            codeHightlightElement.querySelector("pre").textContent = parseDecodedCode(value.code)
             wrapperCodeHighlight.appendChild(codeHightlightElement);
+        });
+
+        // apply style
+        var ryuseilight = new RyuseiLight();
+        ryuseilight.apply('pre', {
+            language: 'js',
+            copy: true,
         });
     }
 
