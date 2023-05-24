@@ -2,16 +2,17 @@
 
 namespace App\Model;
 
+use App\Core\Model;
+
 interface IModel
 {
+    public function loadList($params = []);
 
-    public function findAll();
+    public function load(string $id);
 
-    public function findById();
+    public function insert(array $data);
 
-    public function insert();
+    public function update(array $data);
 
-    public function update();
-
-    public function delete();
+    public function delete(string $id);
 }

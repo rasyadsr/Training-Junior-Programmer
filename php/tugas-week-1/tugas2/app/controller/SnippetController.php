@@ -16,19 +16,32 @@ class SnippetController extends Controller
 
     public function index()
     {
-        $data = $this->snippetModel->findAll();
-        return respone()->json($data);
-    }
+        $get = $this->getQueryParam();
 
-    public function create(array $payload)
-    {
-        $response = $this->snippetModel->insert($payload);
+        $params = [];
 
-        if (!$response) {
-            return respone()->apiResponse("Gagal Menyimpan Snippet", 400, "error", []);
+        if (!empty($get)) {
+
+            if (array_key_exists('keyword', $get)) {
+                $params['whereLike']['title'] = $get['keyword'];
+            }
+
+            if (array_key_exists('snippet_type_id', $get)) {
+                $params['where']['snippet_type_id'] = $get['snippet_type_id'];
+            }
+
+            if (array_key_exists('snippet_id', $get)) {
+                $params['where']['snippet_id'] = $get['snippet_id'];
+            }
         }
 
-        return respone()->apiResponse("Berhasil Menyimpan Snippet", 201, "success", $payload);
+        $response = $this->snippetModel->loadList($params);
+
+        if (!$response) {
+            return respone()->apiResponse("Snippet tidak ditemukan", 404, "error", []);
+        }
+
+        return respone()->apiResponse("Snippet ditemukan", 200, "success", $response);
     }
 
     public function store()
@@ -36,23 +49,47 @@ class SnippetController extends Controller
         $payload = $this->getPayload();
         $payload['created_by'] = 1;
 
-        if (!$payload['snippet_id']) {
-            $this->create($payload);
-        } else {
-            $this->update($payload);
+        $response = $this->snippetModel->insert($payload);
+
+        if (!$response) {
+            return respone()->apiResponse("Snippet gagal disimpan", 400, "error", []);
         }
+
+        return respone()->apiResponse("Snippet berhasil disimpan", 201, "success", $payload);
     }
 
-    public function show()
+    public function show(string $id)
     {
+        $response = $this->snippetModel->load($id);
+
+        if (!$response) {
+            return respone()->apiResponse("Snippet tidak ditemukan", 404, "error", []);
+        }
+
+        return respone()->apiResponse("Snippet ditemukan", 200, "success", $response);
     }
 
     public function update()
     {
+        $payload = $this->getPayload();
+        $payload['created_by'] = 1;
+        $response = $this->snippetModel->update($payload);
+
+        if (!$response) {
+            return respone()->apiResponse("Snippet gagal diupdate", 404, "error", []);
+        }
+
+        return respone()->apiResponse("Snippet berhasil diupdate", 200, "success", $payload);
     }
 
-    public function destroy()
+    public function destroy(string $id)
     {
-        # code...
+        $response = $this->snippetModel->delete($id);
+
+        if (!$response) {
+            return respone()->apiResponse("Snippet gagal dihapus ", 404, "error", []);
+        }
+
+        return respone()->apiResponse("Snippet berhasil dihapus", 200, "success", []);
     }
 }

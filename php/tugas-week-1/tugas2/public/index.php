@@ -21,8 +21,8 @@ $app->get("/", [\App\Controller\HomeController::class, 'index']);
 /** Snippet */
 $app->get("/snippets", [\App\Controller\SnippetController::class, 'index']);
 $app->post("/snippets", [\App\Controller\SnippetController::class, 'store']);
-$app->get("/snippets/[0-9]", [\App\Controller\SnippetController::class, 'show']);
-$app->get("/snippets/[0-9]/edit", [\App\Controller\SnippetController::class, 'edit']);
-$app->put("/snippets", [\App\Controller\SnippetController::class, 'edit']);
+$app->get("/snippets/([0-9]*)", [\App\Controller\SnippetController::class, 'show']);
+$app->post("/snippets/update", [\App\Controller\SnippetController::class, 'update']);
+$app->get("/snippets/delete/([0-9]*)", [\App\Controller\SnippetController::class, 'destroy']);
 
 $app->listen();

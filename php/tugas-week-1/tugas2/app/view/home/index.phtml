@@ -1,40 +1,75 @@
-<div class="container mx-auto p-6">
-    <div class="flex flex-wrap my-6">
-        <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700  w-full">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Selamat Datang Coders 🧑‍💻</h5>
-            <p class="font-normal text-gray-700 dark:text-gray-400">Simpan Code snippet mu disini!</p>
-        </div>
-    </div>
+<div class="container mx-auto p-3">
 
-    <div id="wrapper-form-snippet">
-        <button type="button" id="toggle-form-snippet" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">+
-        </button>
+    <section id="header-content">
+        <div class="flex flex-wrap my-6">
+            <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700  w-full">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Selamat Datang Coders 🧑‍💻</h5>
+                <p class="font-normal text-gray-700 dark:text-gray-400">Simpan Code snippet mu disini!</p>
+            </div>
+        </div>
+
+        <!-- Form Search -->
+        <form>
+            <div class="flex">
+                <button id="dropdown-button" data-dropdown-toggle="dropdown-language" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button">Pilih Bahasa <svg aria-hidden="true" class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                    </svg></button>
+                <div id="dropdown-language" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
+                        <li>
+                            <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" data-snippet-type-id="all">Semua</button>
+                        </li>
+                        <?php foreach ($data['snippet_types'] as $snippet_type) : ?>
+                            <li>
+                                <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" data-snippet-type-id="<?= $snippet_type['snippet_type_id'] ?>"><?= $snippet_type['snippet_type_name'] ?></button>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                <div class="relative w-full">
+                    <input type="search" id="search-keyword" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Cari judul kode..." required>
+                    <button type="button" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" id="btn-search-by-keyword">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <span class="sr-only">Search</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+
+    <section id="code-content" class="my-2">
+        <button type="button" class="px-3 py-2 text-md font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 my-2" id="toggle-form-snippet">🧑‍💻</button>
+        <button type="button" class="text-xs mx-2" id="toggle-form-type-snippet">Buat Tipe Bahasa</button>
         <form class="form-snippet hidden" action="/snippets" method="post">
-            <input type="hidden" name="snippet_id" value="">
+            <input type="hidden" name="snippet_id" value="null" id="snippet_id">
             <div class="mb-6">
                 <label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Judul Kode</label>
-                <input type="text" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Mencetak Hello World" required>
+                <input type="text" id="title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Mencetak Hello World" name="title">
             </div>
 
             <div class="mb-6">
-                <label for="snippet_type_id" class="block text-sm font-medium text-gray-900 dark:text-white">Pilih Bahasa</label>
-                <select id="snippet_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option selected>Pilih Bahasa</option>
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                    <option value="FR">France</option>
-                    <option value="DE">Germany</option>
-                </select>
+                <div class="w-1/4">
+                    <label for="snippet_type_id" class="block text-sm font-medium text-gray-900 dark:text-white">Pilih Bahasa</label>
+                    <select id="snippet_type_id" name="snippet_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected>Pilih Bahasa</option>
+                        <?php foreach ($data['snippet_types'] as $snippet_type) : ?>
+                            <option value="<?= $snippet_type['snippet_type_id'] ?>"><?= $snippet_type['snippet_type_name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
 
             <div class="mb-6">
-                <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode</label>
-                <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Tulis kode kamu disini, misal print('Hello World')"></textarea>
+                <label for="code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode</label>
+                <textarea id="code" name="code" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Tulis kode kamu disini, misal print('Hello World')"></textarea>
             </div>
 
-            <button type="button" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
+            <button type="submit" class="px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 my-2" id="btn-save-snippet">Save</button>
         </form>
-    </div>
+    </section>
 
     <!-- Code highlight content -->
     <div id="wrapper-code-hightlight" class="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -43,60 +78,203 @@
     <!-- Code hightlight elemen -->
     <div class="hidden">
         <h5 class="title-code"></h5>
-        <pre id="code-highlight-element""></pre>
+        <pre id="code-highlight-element" class="mb-2"></pre>
+        <button type="button" class="btn-edit-code px-3 py-2 text-xs font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Edit</button>
+        <button type="button" class="btn-delete-code px-3 py-2 text-xs font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Hapus</button>
     </div>
 
-    <div class=" empty-snippet w-full p-5 text-center hidden">
+    <div class="empty-snippet w-full p-5 text-center hidden">
         <h5>Code kamu belum ada, mari buat dulu! 💻</h5>
     </div>
 
-</div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            loadSnippet()
+        })
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        loadSnippet()
-    })
+        // load snippet
+        async function loadSnippet(params = {}) {
 
-    async function loadSnippet() {
-        // Fetch dulu
-        const response = await fetch("/snippets");
-        const result = await response.json();
+            const request = new URLSearchParams()
 
-        // Kalau ga ada
-        if (!result.length) {
-            document.querySelector(".empty-snippet").classList.remove("hidden");
+            for (const key in params) {
+                if (params[key] != 'all') {
+                    request.append(key, params[key])
+                }
+            }
+
+            try {
+                // Fetch dulu
+                const response = await fetch(`/snippets?${request.toString()}`);
+                const {
+                    data,
+                    meta
+                } = await response.json();
+
+                // Kalau ga ada
+                if (!data.length) {
+                    document.querySelector(".empty-snippet").classList.remove("hidden");
+                }
+
+                const wrapperCodeHighlight = document.getElementById("wrapper-code-hightlight");
+                wrapperCodeHighlight.classList.remove("hidden")
+                wrapperCodeHighlight.innerHTML = "" // reset dulu 
+
+                data.forEach(value => {
+                    const codeHightlightElement = document.getElementById("code-highlight-element").parentElement.cloneNode(true);
+                    codeHightlightElement.classList.remove("hidden")
+                    codeHightlightElement.removeAttribute("id");
+                    codeHightlightElement.querySelector("pre").setAttribute("data-rl-caption", value.title)
+                    codeHightlightElement.querySelector("pre").textContent = parseDecodedCode(value.code)
+                    codeHightlightElement.querySelector(".btn-edit-code").setAttribute("data-snippet-id", value.snippet_id)
+                    codeHightlightElement.querySelector(".btn-delete-code").setAttribute("data-snippet-id", value.snippet_id)
+                    wrapperCodeHighlight.appendChild(codeHightlightElement);
+                });
+
+                // apply style
+                var ryuseilight = new RyuseiLight();
+                ryuseilight.apply('pre', {
+                    language: 'js',
+                    copy: true,
+                });
+
+            } catch (error) {
+                console.error(error.message)
+            }
         }
 
-        const wrapperCodeHighlight = document.getElementById("wrapper-code-hightlight");
-        wrapperCodeHighlight.classList.remove("hidden")
-        wrapperCodeHighlight.innerHTML = "" // reset dulu 
+        // show / hide form
+        document.getElementById("toggle-form-snippet").addEventListener("click", () => {
+            const formSnippet = document.querySelector(".form-snippet")
+            formSnippet.classList.toggle("hidden");
+            formSnippet.setAttribute("action", "/snippets")
+            formSnippet.reset()
+        })
 
-        result.forEach(value => {
+        // buat nge-decode hasil dari filter_var PHP
+        function parseDecodedCode(code) {
+            let parser = new DOMParser();
+            var decoded = parser.parseFromString('<textarea>' + code + '</textarea>', 'text/html').querySelector('textarea').value;
+            return decoded;
+        }
 
-            const codeHightlightElement = document.getElementById("code-highlight-element").parentElement.cloneNode(true);
-            codeHightlightElement.classList.remove("hidden")
-            codeHightlightElement.removeAttribute("id");
-            codeHightlightElement.querySelector(".title-code").textContent = value.title
-            codeHightlightElement.querySelector("pre").textContent = parseDecodedCode(value.code)
-            wrapperCodeHighlight.appendChild(codeHightlightElement);
-        });
+        // untuk aksi save ( create dan edit )
+        document.getElementById("btn-save-snippet").onclick = async function(e) {
+            e.preventDefault();
 
-        // apply style
-        var ryuseilight = new RyuseiLight();
-        ryuseilight.apply('pre', {
-            language: 'js',
-            copy: true,
-        });
-    }
+            const formSnippet = document.querySelector(".form-snippet")
+            const url = formSnippet.getAttribute("action");
 
-    document.getElementById("toggle-form-snippet").addEventListener("click", () => {
-        document.querySelector(".form-snippet").classList.toggle("hidden");
-    })
+            const response = await fetch(url, {
+                method: "POST",
+                body: new FormData(formSnippet)
+            })
 
-    // buat nge-decode hasil dari filter_var PHP
-    function parseDecodedCode(code) {
-        let parser = new DOMParser();
-        var decoded = parser.parseFromString('<textarea>' + code + '</textarea>', 'text/html').querySelector('textarea').value;
-        return decoded;
-    }
-</script>
+            const {
+                meta,
+                data
+            } = await response.json();
+
+            showToast({
+                meta
+            })
+            loadSnippet()
+            formSnippet.classList.contains("hidden") ? "" : formSnippet.classList.add("hidden")
+        }
+
+        // Dropdown button filter berdasarkan bahasa
+        document.getElementById("dropdown-language").addEventListener("click", function(e) {
+            let thisElement = e.target.dataset;
+
+            loadSnippet({
+                snippet_type_id: thisElement.snippetTypeId
+            })
+        })
+
+        // Aksi search
+        document.getElementById("btn-search-by-keyword").addEventListener("click", function(e) {
+            loadSnippet({
+                keyword: document.getElementById("search-keyword").value ?? 'all'
+            })
+        })
+
+        // add listener khusus buat elemen hasil dari clone
+        document.addEventListener('click', function(event) {
+
+            const thisElement = event.target.dataset;
+
+            // aksi edit
+            if (event.target.matches('.btn-edit-code')) {
+                fetch(`/snippets/${thisElement.snippetId}`)
+                    .then((response) => response.json())
+                    .then((result) => {
+
+                        const {
+                            data
+                        } = result;
+
+                        const formSnippet = document.querySelector(".form-snippet");
+                        formSnippet.setAttribute("action", "/snippets/update");
+
+                        /** Set isi form */
+                        document.getElementById("snippet_id").value = data.snippet_id
+                        document.getElementById("title").value = data.title;
+                        document.getElementById("snippet_type_id").value = data.snippet_type_id;
+                        document.getElementById("code").value = parseDecodedCode(data.code);
+
+
+                        formSnippet.classList.contains("hidden") ? formSnippet.classList.remove("hidden") : ""
+
+                    })
+                    .catch(error => console.error(error.message))
+            }
+
+            // aksi hapus
+            if (event.target.matches('.btn-delete-code')) {
+
+                const confirmAnswer = confirm("Yakin mau di hapus ?")
+
+                if (!confirmAnswer) {
+                    return
+                }
+
+                fetch(`/snippets/delete/${thisElement.snippetId}`)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        const {
+                            meta,
+                            data
+                        } = result
+
+                        showToast({
+                            meta
+                        })
+
+                        loadSnippet()
+                    })
+                    .catch((error) => console.error(error.message))
+            }
+        })
+
+        function showToast({
+            meta
+        }) {
+            const toastifySetting = {
+                text: meta.message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {}
+            }
+
+            if (meta.status == "success") {
+                toastifySetting.style.background = "#22c55e";
+            } else {
+                toastifySetting.style.background = "#dc2626";
+            }
+
+            Toastify(toastifySetting).showToast();
+        }
+    </script>

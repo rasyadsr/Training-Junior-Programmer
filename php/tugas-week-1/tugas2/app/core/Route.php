@@ -35,14 +35,15 @@ class Route
         $method = $_SERVER['REQUEST_METHOD'];
 
         foreach ($this->routes as $route) {
-            if ($route['path'] === $path && $route['method'] === $method) {
+            if ($route['method'] === $method && preg_match('#^' . $route['path'] . '$#', $path, $paraneters)) {
                 $handler = $route['handler'];
 
+                array_shift($paraneters);
                 // berarti pake controller
                 if (is_array($handler)) {
                     $controller = new $handler[0];
                     $function   = $handler[1];
-                    call_user_func_array([$controller, $function], []);
+                    call_user_func_array([$controller, $function], $paraneters);
                 }
 
                 // berarti callback function

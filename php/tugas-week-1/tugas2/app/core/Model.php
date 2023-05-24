@@ -12,4 +12,10 @@ class Model
         $database =  new Database();
         $this->connection = $database->connect();
     }
+
+    // TODO: buat fungsi yang reusable
+    public function whereClause()
+    {
+        # code...
+    }
 }
