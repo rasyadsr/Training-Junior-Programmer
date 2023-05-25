@@ -2,17 +2,18 @@
 
 namespace App\Controller;
 
+use App\Core\Auth;
 use App\Model\SnippetType;
 
 class HomeController
 {
     public function index()
     {
-        $snippetTypes = new SnippetType();
-        $dataSnippetTypes = $snippetTypes->loadList();
+        $authService = new Auth();
 
         return view('home/index', [
-            'snippet_types' => $dataSnippetTypes
+            'user'          => $authService->user(),
+            'title'         => "Home",
         ]);
     }
 }

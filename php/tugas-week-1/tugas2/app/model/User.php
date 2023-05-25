@@ -4,23 +4,21 @@ namespace App\Model;
 
 use App\Core\Model;
 
-class SnippetType extends Model implements IModel
+class User extends Model implements IModel
 {
-
-    public string $snippet_type_id;
-    public string $snippet_type_name;
+    public string $id;
+    public string $email;
+    public string $fullname;
+    public string $password;
 
     public function loadList($params = [])
     {
-        $result = null;
-        $statement = $this->connection->query("SELECT snippet_type_id, snippet_type_name FROM snippet_type");
-        $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
-        return $result;
     }
 
     public function load(array $params)
     {
-        $sql = "SELECT snippet_type_id, snippet_type_name FROM snippet_type";
+
+        $sql = "SELECT id, email, `password`, fullname FROM users";
 
         [$executeParam, $whereClause] = $this->whereClause($params);
 
@@ -36,8 +34,9 @@ class SnippetType extends Model implements IModel
     public function insert(array $data)
     {
         try {
-            $statement = $this->connection->prepare("INSERT INTO snippet_type(snippet_type_name) VALUES(?)");
-            $statement->execute([$data['snippet_type_name']]);
+            $statement = $this->connection->prepare("INSERT INTO users(email, `password`, fullname) VALUES(?, ?, ?)");
+            $statement->execute([$data['email'], $data['password'], $data['fullname']]);
+            return $statement->rowCount();
         } catch (\Exception $ex) {
             log_danger($ex);
         }

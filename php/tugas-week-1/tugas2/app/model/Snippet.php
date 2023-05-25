@@ -15,31 +15,11 @@ class Snippet extends Model implements IModel
     public function loadList($params = []): array
     {
         $result = null;
-        $executeParam = [];
 
         // Base Select
         $sql = "SELECT snippet_id, title, snippet_type_id, code, created_by FROM snippets";
-        $whereClause = '';
 
-        // Where Clause
-        if (array_key_exists('where', $params)) {
-            $conditions = [];
-            foreach ($params['where'] as $column => $value) {
-                $conditions[] = "$column = :$column";
-                $executeParam[$column] = $value;
-            }
-            $whereClause = ' WHERE ' . implode(' AND ', $conditions);
-        }
-
-        // WhereLike Clause
-        if (array_key_exists('whereLike', $params)) {
-            $likeConditions = [];
-            foreach ($params['whereLike'] as $column => $value) {
-                $likeConditions[] = "$column LIKE :$column";
-                $executeParam[$column] = '%' . $value . '%';
-            }
-            $whereClause .= ($whereClause ? ' AND ' : ' WHERE ') . implode(' AND ', $likeConditions);
-        }
+        [$executeParam, $whereClause] = $this->whereClause($params);
 
         // Order Clause
         $orderClause = " ORDER BY snippet_id DESC";
@@ -52,11 +32,17 @@ class Snippet extends Model implements IModel
     }
 
 
-    public function load(string $id)
+    public function load(array $params)
     {
         try {
-            $statement = $this->connection->prepare("SELECT snippet_id, title, snippet_type_id, code, created_by FROM snippets WHERE snippet_id = ?");
-            $statement->execute([$id]);
+
+            $sql = "SELECT snippet_id, title, snippet_type_id, code, created_by FROM snippets";
+
+            [$executeParam, $whereClause] = $this->whereClause($params);
+
+            $statement = $this->connection->prepare($sql . $whereClause);
+
+            $statement->execute($executeParam);
             return $statement->fetch(\PDO::FETCH_ASSOC);
         } catch (\PDOException $ex) {
             log_danger($ex);

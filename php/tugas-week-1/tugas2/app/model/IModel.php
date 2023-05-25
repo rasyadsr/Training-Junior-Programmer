@@ -8,7 +8,7 @@ interface IModel
 {
     public function loadList($params = []);
 
-    public function load(string $id);
+    public function load(array $data);
 
     public function insert(array $data);
 

@@ -32,4 +32,9 @@ class Response
         $this->status($httpStatusCode);
         $this->json($response);
     }
+
+    public function redirect(string $path)
+    {
+        header("Location: $path");
+    }
 }

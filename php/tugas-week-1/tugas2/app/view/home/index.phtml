@@ -9,40 +9,38 @@
         </div>
 
         <!-- Form Search -->
-        <form>
-            <div class="flex">
-                <button id="dropdown-button" data-dropdown-toggle="dropdown-language" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button">Pilih Bahasa <svg aria-hidden="true" class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                    </svg></button>
-                <div id="dropdown-language" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
-                        <li>
-                            <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" data-snippet-type-id="all">Semua</button>
-                        </li>
-                        <?php foreach ($data['snippet_types'] as $snippet_type) : ?>
-                            <li>
-                                <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" data-snippet-type-id="<?= $snippet_type['snippet_type_id'] ?>"><?= $snippet_type['snippet_type_name'] ?></button>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-                <div class="relative w-full">
-                    <input type="search" id="search-keyword" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Cari judul kode..." required>
-                    <button type="button" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" id="btn-search-by-keyword">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                        <span class="sr-only">Search</span>
-                    </button>
-                </div>
+        <div class="flex">
+            <button id="dropdown-button" data-dropdown-toggle="dropdown-language" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button">Pilih Bahasa <svg aria-hidden="true" class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg></button>
+            <div id="dropdown-language" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button" id="ul-list-language">
+                </ul>
+                <!-- li untuk di clone -->
+                <li class="list-type-for-clone hidden">
+                    <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" data-snippet-type-id="all">Semua</button>
+                </li>
             </div>
-        </form>
+            <div class="relative w-full">
+                <input type="search" id="search-keyword" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Cari judul kode..." required>
+                <button type="button" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" id="btn-search-by-keyword">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <span class="sr-only">Search</span>
+                </button>
+            </div>
+        </div>
     </section>
 
 
     <section id="code-content" class="my-2">
-        <button type="button" class="px-3 py-2 text-md font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 my-2" id="toggle-form-snippet">🧑‍💻</button>
-        <button type="button" class="text-xs mx-2" id="toggle-form-type-snippet">Buat Tipe Bahasa</button>
+        <div class="mb-3">
+            <button type="button" class="px-3 py-2 text-md font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 my-2" id="toggle-form-snippet">🧑‍💻</button>
+            <button type="button" class="text-xs mx-2" id="toggle-form-type-snippet">Buat Tipe Bahasa</button>
+        </div>
+
+        <!-- Form Snippet -->
         <form class="form-snippet hidden" action="/snippets" method="post">
             <input type="hidden" name="snippet_id" value="null" id="snippet_id">
             <div class="mb-6">
@@ -55,9 +53,6 @@
                     <label for="snippet_type_id" class="block text-sm font-medium text-gray-900 dark:text-white">Pilih Bahasa</label>
                     <select id="snippet_type_id" name="snippet_type_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected>Pilih Bahasa</option>
-                        <?php foreach ($data['snippet_types'] as $snippet_type) : ?>
-                            <option value="<?= $snippet_type['snippet_type_id'] ?>"><?= $snippet_type['snippet_type_name'] ?></option>
-                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -68,6 +63,17 @@
             </div>
 
             <button type="submit" class="px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 my-2" id="btn-save-snippet">Save</button>
+        </form>
+
+
+        <!-- Form Type Snippet -->
+        <form class="form-type-snippet hidden" action="/snippet-type" method="post">
+            <input type="hidden" name="snippet_type" value="null" id="snippet_type">
+            <div class="mb-6">
+                <label for="snippet_type_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe Name</label>
+                <input type="text" id="snippet_type_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Contoh : Golang, MySQL dll" name="snippet_type_name">
+            </div>
+            <button type="submit" class="px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 my-2" id="btn-save-type-snippet">Save</button>
         </form>
     </section>
 
@@ -90,6 +96,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             loadSnippet()
+            loadSnippetType()
         })
 
         // load snippet
@@ -112,9 +119,8 @@
                 } = await response.json();
 
                 // Kalau ga ada
-                if (!data.length) {
-                    document.querySelector(".empty-snippet").classList.remove("hidden");
-                }
+                !data.length ?
+                    document.querySelector(".empty-snippet").classList.remove("hidden") : document.querySelector(".empty-snippet").classList.add("hidden")
 
                 const wrapperCodeHighlight = document.getElementById("wrapper-code-hightlight");
                 wrapperCodeHighlight.classList.remove("hidden")
@@ -146,6 +152,12 @@
         // show / hide form
         document.getElementById("toggle-form-snippet").addEventListener("click", () => {
             const formSnippet = document.querySelector(".form-snippet")
+            const formTypeSnippet = document.querySelector(".form-type-snippet")
+
+            if (!formTypeSnippet.classList.contains("hidden")) {
+                formTypeSnippet.classList.add("hidden")
+            }
+
             formSnippet.classList.toggle("hidden");
             formSnippet.setAttribute("action", "/snippets")
             formSnippet.reset()
@@ -276,5 +288,81 @@
             }
 
             Toastify(toastifySetting).showToast();
+        }
+
+        document.getElementById("toggle-form-type-snippet").addEventListener("click", function(e) {
+            const formTypeSnippet = document.querySelector(".form-type-snippet")
+            const formSnippet = document.querySelector(".form-snippet")
+            const btnToggleFormTypeSnippet = document.getElementById("toggle-form-type-snippet")
+
+            if (!formSnippet.classList.contains("hidden")) {
+                formSnippet.classList.add("hidden")
+            }
+
+            formTypeSnippet.classList.toggle("hidden")
+        })
+
+        document.getElementById("btn-save-type-snippet").addEventListener("click", async function(e) {
+            e.preventDefault()
+
+            try {
+                const response = await fetch("/snippet-type", {
+                    method: "POST",
+                    body: new FormData(document.querySelector(".form-type-snippet"))
+                })
+
+                document.querySelector(".form-type-snippet").reset()
+
+                const {
+                    meta,
+                    data
+                } = await response.json()
+
+                showToast({
+                    meta
+                })
+                loadSnippetType()
+            } catch (error) {
+                console.error(error.message)
+            }
+        })
+
+        async function loadSnippetType() {
+
+            try {
+                const response = await fetch("/snippet-type")
+                const {
+                    meta,
+                    data
+                } = await response.json()
+
+                const ElSelectSnippetType = document.getElementById("snippet_type_id");
+                const ElListLanguage = document.getElementById("ul-list-language");
+
+                ElSelectSnippetType.innerHTML = ""
+                ElListLanguage.innerHTML = ""
+
+                // filter button semua
+                const cloneListTypeButtonSearch = document.querySelector(".list-type-for-clone").cloneNode(true)
+                cloneListTypeButtonSearch.classList.remove("hidden")
+                ElListLanguage.append(cloneListTypeButtonSearch)
+
+                data.forEach((value) => {
+                    // buat pilih option pilih bahasa form snippet
+                    const option = new Option(value.snippet_type_name, value.snippet_type_id)
+                    ElSelectSnippetType.append(option)
+
+
+                    // buat dropdown filter
+                    const cloneListTypeButtonSearch = document.querySelector(".list-type-for-clone").cloneNode(true)
+                    cloneListTypeButtonSearch.classList.remove("hidden")
+                    cloneListTypeButtonSearch.querySelector("button").dataset.snippetTypeId = value.snippet_type_id
+                    cloneListTypeButtonSearch.querySelector("button").textContent = value.snippet_type_name
+                    ElListLanguage.append(cloneListTypeButtonSearch)
+                })
+
+            } catch (error) {
+                console.error(error.message)
+            }
         }
     </script>

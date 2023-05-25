@@ -2,7 +2,7 @@
 
 use App\Core\Response;
 
-function respone(): Response
+function response(): Response
 {
     return new Response;
 }

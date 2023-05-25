@@ -19,11 +19,13 @@ class Route
     {
         $path    = $arguments[0];
         $handler = $arguments[1];
+        $middlewares = $arguments[2] ?? [];
 
         array_push($this->routes, [
             'method'  => strtoupper($httpMethod),
             'path'    => $path,
-            'handler' => $handler
+            'handler' => $handler,
+            'middlewares' => $middlewares
         ]);
 
         return $this;
@@ -37,6 +39,13 @@ class Route
         foreach ($this->routes as $route) {
             if ($route['method'] === $method && preg_match('#^' . $route['path'] . '$#', $path, $paraneters)) {
                 $handler = $route['handler'];
+
+                if (!empty($route['middlewares'])) {
+                    foreach ($route['middlewares'] as $key => $middleware) {
+                        $instanceMiddleware = new $middleware;
+                        call_user_func_array([$instanceMiddleware, "action"], []);
+                    }
+                }
 
                 array_shift($paraneters);
                 // berarti pake controller
@@ -59,10 +68,6 @@ class Route
         }
 
         $this->notFoundHandler();
-    }
-
-    public function middleware(mixed $middleware)
-    {
     }
 
     public function notFoundHandler()
