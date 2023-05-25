@@ -19,6 +19,7 @@ class AuthMiddleware implements IMiddleware
 
         if (!$user) {
             return response()->redirect("/login");
+            exit;
         }
     }
 }
