@@ -72,20 +72,64 @@ vacancies.forEach((value) => {
 
 /** Loop dan mapping posisi */
 const selectPosisi = document.getElementById("posisi");
+
 selectLowongan.addEventListener("change", function () {
     // Reset dulu
     selectPosisi.innerHTML = ""
     let disabledOption = new Option("- Pilih Posisi -")
-    disabledOption.disabled = true
     selectPosisi.append(disabledOption)
 
+    if (selectLowongan.parentElement.querySelector("p")) {
+        selectLowongan.parentElement.querySelectorAll("p").forEach((e) => {
+            e.remove()
+        })
+    }
+
+    /** Validasi quota sudah terisi */
+    if (!checkVacanciesQuotaIsAvailable(this.value)) {
+        const elPErr = document.querySelector(".error-info").cloneNode()
+        elPErr.classList.remove("hidden")
+        elPErr.textContent = `Mohon maaf, rekrutasi untuk ${getTextContentOption(this)} sudah penuh. dan tidak dapat dipilih`;
+        selectLowongan.parentElement.append(elPErr)
+        return false;
+    }
+
+    /** Mapping posisi sesuai lowongan */
     const { positions } = vacancies.find((value) => value.lowongan_id == this.value)
     positions.forEach((value) => {
         let option = new Option(value.position_name, value.position_id)
         selectPosisi.append(option);
     })
 
+    /** Validasi jika <= 2 maka tampilkan informasi berikut */
+    let sisaQuota = checkSisaQuota(this.value)
+    if (sisaQuota <= 2) {
+        const elPWarning = document.querySelector(".warning-info").cloneNode()
+        elPWarning.classList.remove("hidden")
+        elPWarning.textContent = `Kuota tersisa untuk ${getTextContentOption(this)} hanya ${sisaQuota} pendaftar.`;
+        selectLowongan.parentElement.append(elPWarning)
+        return false
+    }
+
+    /** Informasi dapat memilih lowongan */
+    const elPSuccess = document.querySelector(".success-info").cloneNode()
+    elPSuccess.classList.remove("hidden")
+    elPSuccess.textContent = `Anda dapat memilih lowongan ${getTextContentOption(this)}`;
+    selectLowongan.parentElement.append(elPSuccess)
+
 });
+
+/** Validasi email */
+document.getElementById("email").addEventListener("change", function () {
+    this.parentElement.querySelector("p") ? this.parentElement.querySelector("p").remove() : ""
+    const isAlreadyUsed = applicants.find((applicant) => applicant.email === this.value)
+    if (isAlreadyUsed) {
+        const elPErr = document.querySelector(".error-info").cloneNode()
+        elPErr.classList.remove("hidden")
+        elPErr.textContent = `Email tersebut sudah digunakan`;
+        this.parentElement.append(elPErr)
+    }
+})
 
 /** Action submit form receruitment */
 document.getElementById("form-recruitment").onsubmit = (e) => {
@@ -95,33 +139,18 @@ document.getElementById("form-recruitment").onsubmit = (e) => {
     const elements = document.querySelectorAll('#form-recruitment input, #form-recruitment option:checked');
 
     /** Validasi mandatory */
-    if (Array.from(elements).some((el) => el.value == "")) {
-        alert('Semua input wajib di isi')
-        return
-    }
-
-    /** Validasi email sudah digunakan atau belum */
-    const elInputEmail = document.getElementById("email");
-    if (findApplicantByEmail(elInputEmail.value)) {
-        alert("Email tersebut sudah digunakan")
+    const allEmptyArray = Array.from(elements).filter((el) => el.value == "")
+    if (allEmptyArray.length) {
+        allEmptyArray.forEach((e) => {
+            let elPErrMandatory = document.querySelector(".error-info").cloneNode()
+            elPErrMandatory.classList.remove('hidden')
+            elPErrMandatory.textContent = `Input ini wajib di isi`
+            e.closest('.input-wrapper').append(elPErrMandatory)
+        })
         return
     }
 
     const elOptionLowongan = document.getElementById("lowongan");
-
-    /** Validasi Quota ada atau tidak */
-    if (!checkVacanciesQuotaIsAvailable(elOptionLowongan.value)) {
-        alert(`Mohon maaf, rekrutasi untuk ${getTextContentOption(elOptionLowongan)} sudah penuh. dan tidak dapat dipilih`)
-        return
-    }
-
-    /** Informasi Quota <= 2  */
-    if (checkQuotaIsLessThanOrEqualTwo(elOptionLowongan.value)) {
-        alert(`Kuota tersisa untuk ${getTextContentOption(elOptionLowongan)} hanya 2 pendaftar.`)
-    }
-
-    /** Informasi dapat memilih lowongan */
-    alert(`Anda dapat memilih lowongan ${getTextContentOption(elOptionLowongan)}`)
 
     /** reset wrapper */
     document.querySelector(".wrapper-list-content").innerHTML = ""
@@ -184,8 +213,7 @@ function removeStar(text) {
 
 /** Action kalau button close */
 document.getElementById("close-modal").onclick = () => {
-    /** reset form */
-    document.getElementById("form-recruitment").reset()
+    resetForm()
 
     /** hide modal */
     document.getElementById("modal-success-submit").classList.add("hidden")
@@ -202,14 +230,13 @@ function checkVacanciesQuotaIsAvailable(lowongan_id) {
     const selectedVacancy = vacancies.find(vacancy => vacancy.lowongan_id == lowongan_id)
 
     const applicantWhoSelectThatVacancy = applicants.filter(applicant => applicant.lowongan == selectedVacancy.lowongan_name)
-
     return applicantWhoSelectThatVacancy.length !== selectedVacancy.available_quota;
 }
 
-function checkQuotaIsLessThanOrEqualTwo(lowongan_id) {
+function checkSisaQuota(lowongan_id) {
     const selectedVacancy = vacancies.find(vacancy => vacancy.lowongan_id == lowongan_id)
     const applicantWhoSelectThatVacancy = applicants.filter(applicant => applicant.lowongan == selectedVacancy.lowongan_name)
-    return selectedVacancy.available_quota - applicantWhoSelectThatVacancy.length <= 2
+    return selectedVacancy.available_quota - applicantWhoSelectThatVacancy.length
 }
 
 function countApplicantWhoApplied(lowongan_id) {
@@ -217,4 +244,18 @@ function countApplicantWhoApplied(lowongan_id) {
     const applicantWhoSelectThatVacancy = applicants.filter(applicant => applicant.lowongan == selectedVacancy.lowongan_name)
 
     return applicantWhoSelectThatVacancy.length
+}
+
+function resetForm() {
+    /** reset form */
+    document.getElementById("form-recruitment").reset()
+
+    selectLowongan.parentElement.querySelector("p").remove()
+    document.getElementById('email').parentElement.querySelector("p") ? document.getElementById('email').parentElement.querySelector("p").remove() : ""
+
+    document.querySelectorAll('.input-wrapper').forEach((e) => {
+        if (e.querySelector("p")) {
+            e.querySelector('p').remove()
+        }
+    })
 }
