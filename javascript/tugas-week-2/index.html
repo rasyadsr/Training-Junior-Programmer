@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recruitment Form</title>
+    <!-- Library : Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Font family -->
+    <link
+      href="https://fonts.cdnfonts.com/css/source-sans-pro"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="logo-wrapper">
+        <a href="https://neuronworks.co.id">
+          <img src="./assets/img/logo-neuronworks.png" alt="Logo Neuronworks" />
+        </a>
+      </div>
+    </nav>
+
+    <section id="main-container">
+      <!-- Left side [START] -->
+      <div class="main-img">
+        <img src="./assets/img/Starlid-illustration.svg" alt="" />
+      </div>
+      <!-- Left side [END] -->
+      <!-- Right side [START] -->
+      <div class="main-form">
+        <form action="" id="form-recruitment">
+          <img src="./assets/img/logo3.0.png" alt="" />
+          <h3 class="form-title">Form Rekruitasi</h3>
+          <p class="form-description">
+            Isi data di bawah sesuai dengan identitas diri anda dan lowongan
+            yang akan anda pilih
+          </p>
+          <div class="input-wrapper">
+            <label for="fullname">Fullname<sup class="mandatory">*</sup></label>
+            <input
+              type="text"
+              name="fullname"
+              id="fullname"
+              placeholder="Masukan nama"
+              autocomplete="off"
+            />
+          </div>
+          <div class="input-wrapper">
+            <label for="email">Email<sup class="mandatory">*</sup></label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Masukan email"
+              autocomplete="off"
+            />
+          </div>
+          <div class="input-wrapper">
+            <label for="nomor_telepon"
+              >Nomor Telepon<sup class="mandatory">*</sup></label
+            >
+            <input
+              type="tel"
+              name="nomor_telepon"
+              id="nomor_telepon"
+              placeholder="Masukan nomor telepon"
+              autocomplete="off"
+            />
+          </div>
+          <div class="input-wrapper">
+            <label for="lowongan">Lowongan<sup class="mandatory">*</sup></label>
+            <select name="lowongan" id="lowongan">
+              <option value="">- Pilih Lowongan -</option>
+            </select>
+          </div>
+          <div class="input-wrapper">
+            <label for="posisi">Posisi<sup class="mandatory">*</sup></label>
+            <select name="posisi" id="posisi">
+              <option value="">- Pilih Posisi -</option>
+            </select>
+          </div>
+          <button type="submit">Kirim</button>
+          <div class="social-media">
+            <ul>
+              <li>
+                <a href="https://instagram.com/neuronworks">
+                  <i class="fab fa-instagram-square"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.youtube.com/@NeuronworksIndonesia">
+                  <i class="fab fa-youtube"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/neuronworks">
+                  <i class="fab fa-twitter"></i>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/neuronworks/">
+                  <i class="fab fa-facebook-square"></i>
+                </a>
+              </li>
+            </ul>
+            <a href="https://www.neuronworks.co.id/">www.neuronworks.co.id</a>
+          </div>
+        </form>
+      </div>
+      <!-- Right side [END] -->
+      <!-- Modal Success [BEGIN] -->
+      <div id="modal-success-submit" class="hidden">
+        <h3>
+          Terima kasih telah melakukan Recruitment!
+          <i class="fa-regular fa-circle-check" style="color: #1f513e"></i>
+        </h3>
+        <div class="wrapper-list-content"></div>
+        <button id="close-modal">Close</button>
+        <div class="list-wrapper hidden">
+          <div class="list-title"></div>
+          <div class="list-content"></div>
+        </div>
+        <div class="info-lowongan"></div>
+      </div>
+      <!-- Modal Success [END] -->
+    </section>
+
+    <!-- Javascript -->
+    <script src="./assets/js/script.js"></script>
+  </body>
+</html>
